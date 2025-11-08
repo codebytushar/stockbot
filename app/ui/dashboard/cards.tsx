@@ -6,6 +6,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
 import { fetchCardData } from '@/app/lib/data';
+import { getStockQuote } from "@/app/lib/stocks";
 
 const iconMap = {
   collected: BanknotesIcon,
@@ -15,22 +16,22 @@ const iconMap = {
 };
 
 export default async function CardWrapper() {
-   const {
-    numberOfInvoices,
-    numberOfCustomers,
-    totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
+
+  const nifty = await getStockQuote("^NSEI"); 
+  const sensex = await getStockQuote("^BSESN");
+  const banknifty = await getStockQuote("^NSEBANK");
+  const niftyit = await getStockQuote("^CNXIT");
+
   return (
     <>
       {/* NOTE: Uncomment this code in Chapter 9 */}
 
-      <Card title="Collected" value={totalPaidInvoices} type="collected" />
-      <Card title="Pending" value={totalPendingInvoices} type="pending" />
-      <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
+      <Card title="Sensex" value={sensex?.price ?? 'N/A'} type="collected" />
+      <Card title="Nifty 50" value={nifty?.price ?? 'N/A'} type="pending" />
+      <Card title="Bank Nifty" value={banknifty?.price ?? 'N/A'} type="invoices" />
       <Card
-        title="Total Customers"
-        value={numberOfCustomers}
+        title="Gold Prices"
+        value={niftyit?.price ?? 'N/A'}
         type="customers"
       />
     </>
